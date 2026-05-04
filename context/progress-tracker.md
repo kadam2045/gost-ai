@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Feature 05 (TBD)
+- Feature 05 complete - Prisma schema and data layer
 
 ## Current Goal
 
-- Continue the editor workspace sequence after landing the project dialogs and editor home unit.
+- Land the Prisma-backed project metadata foundation and keep verification green.
 
 ## Completed
 
@@ -16,6 +16,7 @@ Update this file whenever the current phase, active feature, or implementation s
 - Authentication foundation from `context/feature-specs/03-auth.md`, including Clerk provider setup, auth routes, root redirects, proxy-based protection, editor user menu integration, and production verification.
 - Project dialogs and editor home from `context/feature-specs/04-project-dialogs.md`, including the `/editor` empty state, mock project lists, owned-project rename/delete actions, mobile sidebar scrim behavior, and functional create/rename/delete dialogs with dedicated local state management.
 - Project dialogs and editor home refinement from `context/feature-specs/04-project-dialogs.md`, correcting the broken sidebar tab/content layout and aligning the sidebar and create dialog presentation with the approved references while keeping mock-data-only behavior.
+- Prisma schema and data layer from `context/feature-specs/05-prisma.md`, including the multi-file Prisma project models, cached Prisma client singleton with `prisma+postgres://` Accelerate branching and `@prisma/adapter-pg` fallback, the first migration, and generated client output.
 
 ## In Progress
 
@@ -23,7 +24,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Next Up
 
-- Feature 05 (TBD)
+- Feature 06 (TBD)
 
 ## Open Questions
 
@@ -32,6 +33,7 @@ Update this file whenever the current phase, active feature, or implementation s
 ## Architecture Decisions
 
 - Set Next.js `distDir` to `.next-build` in this workspace so production builds avoid the recurring Windows `.next/trace` file lock issue during local verification.
+- Allow `NEXT_DIST_DIR` to override the default Next.js build directory during local verification so production builds can avoid external Windows locks on `.next-build` without changing the app's default output path.
 
 ## Session Notes
 
@@ -48,3 +50,6 @@ Update this file whenever the current phase, active feature, or implementation s
 - Verified `npm run lint` and `npx tsc --noEmit`; `npm run build` still hits the known local Windows `EPERM` lock against `.next-build\app-path-routes-manifest.json`.
 - Refined the same `04-project-dialogs` unit after visual review: fixed the sidebar tabs stacking bug, moved the sidebar create action into the intended top section, and tuned the create dialog layout to match the approved references more closely.
 - Re-verified `npm run lint` and `npx tsc --noEmit` after the layout correction pass.
+- Completed `05-prisma.md` by adding `Project` and `ProjectCollaborator` to the folder-based Prisma schema, generating the Prisma 7 client, and applying the initial `init_project_data_layer` migration against the configured PostgreSQL database.
+- Added `lib/prisma.ts` as the shared cached Prisma singleton with runtime branching between `accelerateUrl` for `prisma+postgres://` connections and `PrismaPg` for direct PostgreSQL URLs.
+- Verified `npm run lint`, `npx tsc --noEmit`, and `npm run build` by using `NEXT_DIST_DIR=.next-build-verify` for the build step because another local Node process was locking the default `.next-build` directory.
