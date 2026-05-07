@@ -11,13 +11,14 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-import type { MockProject, ProjectDialogMode } from "@/components/editor/project-dialog-state"
+import type { ProjectResponse } from "@/lib/project-api"
+import type { ProjectDialogMode } from "@/hooks/use-project-actions"
 
 interface ProjectDialogsProps {
   dialogMode: ProjectDialogMode
   draftName: string
   isLoading: boolean
-  selectedProject: MockProject | null
+  selectedProject: ProjectResponse | null
   slugPreview: string
   onClose: () => void
   onDraftNameChange: (value: string) => void
@@ -157,7 +158,7 @@ export function ProjectDialogs({
             title="Delete Project"
             description={
               selectedProject
-                ? `This will remove ${selectedProject.name} from the current mock project list.`
+                ? `This will permanently remove ${selectedProject.name} and all its design data.`
                 : "This action cannot be undone."
             }
           />

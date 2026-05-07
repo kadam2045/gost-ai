@@ -4,11 +4,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Feature 05 complete - Prisma schema and data layer
+- Feature 07 in progress - Wire Editor Home to Real API
 
 ## Current Goal
 
-- Land the Prisma-backed project metadata foundation and keep verification green.
+- Wire the editor home sidebar and dialogs to the real project API, replacing mock data with persistent state.
 
 ## Completed
 
@@ -17,6 +17,8 @@ Update this file whenever the current phase, active feature, or implementation s
 - Project dialogs and editor home from `context/feature-specs/04-project-dialogs.md`, including the `/editor` empty state, mock project lists, owned-project rename/delete actions, mobile sidebar scrim behavior, and functional create/rename/delete dialogs with dedicated local state management.
 - Project dialogs and editor home refinement from `context/feature-specs/04-project-dialogs.md`, correcting the broken sidebar tab/content layout and aligning the sidebar and create dialog presentation with the approved references while keeping mock-data-only behavior.
 - Prisma schema and data layer from `context/feature-specs/05-prisma.md`, including the multi-file Prisma project models, cached Prisma client singleton with `prisma+postgres://` Accelerate branching and `@prisma/adapter-pg` fallback, the first migration, and generated client output.
+- Project API routes from `context/feature-specs/06-project-apis.md`, including authenticated owner-scoped list/create/rename/delete route handlers, shared request parsing helpers, owner checks for mutations, and verified `401`/`403` handling paths in the backend implementation.
+- Wire Editor Home to Real API from `context/feature-specs/07-wire-editor-home.md`, including Server Component data fetching, persistent `useProjectActions` hook, and verified project CRUD operations against the Prisma data layer.
 
 ## In Progress
 
@@ -24,7 +26,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Next Up
 
-- Feature 06 (TBD)
+- Wire the editor project dialogs and sidebar to the real project APIs in a future feature unit.
 
 ## Open Questions
 
@@ -37,6 +39,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Session Notes
 
+- Started `06-project-apis.md` by adding backend-only project route handlers for list/create/rename/delete, keeping the editor UI on mock state for now.
+- Completed `06-project-apis.md` with `GET /api/projects`, `POST /api/projects`, `PATCH /api/projects/[projectId]`, and `DELETE /api/projects/[projectId]`, all backed by Clerk auth and Prisma project ownership checks.
+- Added `lib/project-api.ts` to centralize route-level auth lookup, JSON parsing, default-name handling for project creation, and consistent error responses for project mutations.
+- Verified the new API routes with `npm run lint -- app/api/projects lib/project-api.ts`, `npx tsc --noEmit`, and `npm run build` using `NEXT_DIST_DIR=.next-build-verify-api`.
+- `next build` refreshed `tsconfig.json` includes for the additional generated Next.js type output directories used during local verification.
 - Completed the design system feature unit with token-driven dark theme styling and generated shadcn primitives verified by lint and production build.
 - Implemented the editor workspace shell feature from `context/feature-specs/02-editor.md`, including the navbar, floating project sidebar, and reusable dialog shell pattern.
 - Lint passes for the new editor components; production build verification is still pending because `next build` hit a local Windows permission error on `.next/trace`.
@@ -53,3 +60,4 @@ Update this file whenever the current phase, active feature, or implementation s
 - Completed `05-prisma.md` by adding `Project` and `ProjectCollaborator` to the folder-based Prisma schema, generating the Prisma 7 client, and applying the initial `init_project_data_layer` migration against the configured PostgreSQL database.
 - Added `lib/prisma.ts` as the shared cached Prisma singleton with runtime branching between `accelerateUrl` for `prisma+postgres://` connections and `PrismaPg` for direct PostgreSQL URLs.
 - Verified `npm run lint`, `npx tsc --noEmit`, and `npm run build` by using `NEXT_DIST_DIR=.next-build-verify` for the build step because another local Node process was locking the default `.next-build` directory.
+- Refined `.gitignore` to include `/.next-build-verify*/` patterns, ensuring that transient verification build artifacts generated during local testing are correctly ignored by source control.

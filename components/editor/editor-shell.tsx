@@ -6,20 +6,24 @@ import { Plus } from "lucide-react"
 
 import { EditorNavbar } from "@/components/editor/editor-navbar"
 import { ProjectDialogs } from "@/components/editor/project-dialogs"
-import { useProjectDialogState } from "@/components/editor/project-dialog-state"
+import { useProjectActions } from "@/hooks/use-project-actions"
 import { ProjectSidebar } from "@/components/editor/project-sidebar"
 import { Button } from "@/components/ui/button"
+import type { ProjectResponse } from "@/lib/project-api"
 
-export function EditorShellPreview() {
+interface EditorShellProps {
+  ownedProjects: ProjectResponse[]
+  sharedProjects: ProjectResponse[]
+}
+
+export function EditorShell({ ownedProjects, sharedProjects }: EditorShellProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const {
     dialogMode,
     draftName,
     isLoading,
-    ownedProjects,
     selectedProject,
     setDraftName,
-    sharedProjects,
     slugPreview,
     closeDialog,
     openCreateDialog,
@@ -28,7 +32,7 @@ export function EditorShellPreview() {
     submitCreateProject,
     submitDeleteProject,
     submitRenameProject,
-  } = useProjectDialogState()
+  } = useProjectActions()
 
   return (
     <div className="flex min-h-screen flex-col bg-base text-copy-primary">

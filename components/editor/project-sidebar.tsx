@@ -5,17 +5,17 @@ import { Pencil, Plus, Trash2, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
-import type { MockProject } from "@/components/editor/project-dialog-state"
+import type { ProjectResponse } from "@/lib/project-api"
 
 interface ProjectSidebarProps {
   className?: string
   isOpen: boolean
-  ownedProjects?: MockProject[]
-  sharedProjects?: MockProject[]
+  ownedProjects?: ProjectResponse[]
+  sharedProjects?: ProjectResponse[]
   onClose?: () => void
   onNewProject?: () => void
-  onRenameProject?: (project: MockProject) => void
-  onDeleteProject?: (project: MockProject) => void
+  onRenameProject?: (project: ProjectResponse) => void
+  onDeleteProject?: (project: ProjectResponse) => void
 }
 
 function EmptyProjectsState({
@@ -45,10 +45,10 @@ function ProjectList({
   onRenameProject,
   onDeleteProject,
 }: {
-  projects: MockProject[]
+  projects: ProjectResponse[]
   showOwnedActions: boolean
-  onRenameProject?: (project: MockProject) => void
-  onDeleteProject?: (project: MockProject) => void
+  onRenameProject?: (project: ProjectResponse) => void
+  onDeleteProject?: (project: ProjectResponse) => void
 }) {
   if (projects.length === 0) {
     return (
@@ -75,7 +75,7 @@ function ProjectList({
               {project.name}
             </p>
             <p className="truncate text-xs uppercase tracking-[0.18em] text-copy-faint">
-              {project.slug}
+              {project.id}
             </p>
           </div>
 
