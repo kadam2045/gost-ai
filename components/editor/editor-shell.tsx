@@ -55,10 +55,14 @@ export function EditorShell({ ownedProjects, sharedProjects }: EditorShellProps)
                   "rounded-full transition-colors hover:bg-subtle focus-visible:ring-2 focus-visible:ring-brand/60 focus-visible:ring-offset-0",
                 userButtonPopoverCard:
                   "border border-surface-border bg-surface text-copy-primary",
+                userButtonPopoverMain: "text-copy-primary",
+                userButtonPopoverActions: "text-copy-primary",
                 userButtonPopoverActionButton:
-                  "text-copy-primary hover:bg-subtle",
-                userButtonPopoverActionButtonText: "text-copy-primary",
+                  "text-copy-primary! hover:bg-subtle",
+                userButtonPopoverActionButtonText: "text-copy-primary!",
+                userButtonPopoverActionButtonIcon: "text-copy-muted",
                 userButtonPopoverFooter: "border-t border-surface-border",
+
               },
             }}
           />

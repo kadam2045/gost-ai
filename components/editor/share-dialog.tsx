@@ -142,7 +142,8 @@ export function ShareDialog({
                 type="email"
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
-                className="h-11 rounded-xl border-surface-border bg-base px-4 focus-visible:ring-brand/40"
+                className="h-11 rounded-xl border-surface-border bg-base text-copy-primary placeholder:text-copy-faint px-4 focus-visible:ring-brand/40"
+
                 required
               />
               <Button
