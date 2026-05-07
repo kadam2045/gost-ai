@@ -4,21 +4,22 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-- Feature 07 in progress - Wire Editor Home to Real API
+- Feature 09 in progress - Share Dialog
 
 ## Current Goal
 
-- Wire the editor home sidebar and dialogs to the real project API, replacing mock data with persistent state.
+- Implement the Share Dialog for project collaborators, including API routes for invite/remove and Clerk user enrichment.
 
 ## Completed
 
 - Design system foundation from `context/feature-specs/01-design-syetem.md`, including shadcn/ui setup, requested UI primitives, `lucide-react`, the shared `cn()` helper, and dark theme token integration.
+- UI theme and typography alignment from `context/ui-context.md`, ensuring `#080809` background with a subtle canvas grid, brand glow, refined font sizes/weights for the empty state, and Geist Sans/Mono application.
 - Authentication foundation from `context/feature-specs/03-auth.md`, including Clerk provider setup, auth routes, root redirects, proxy-based protection, editor user menu integration, and production verification.
 - Project dialogs and editor home from `context/feature-specs/04-project-dialogs.md`, including the `/editor` empty state, mock project lists, owned-project rename/delete actions, mobile sidebar scrim behavior, and functional create/rename/delete dialogs with dedicated local state management.
 - Project dialogs and editor home refinement from `context/feature-specs/04-project-dialogs.md`, correcting the broken sidebar tab/content layout and aligning the sidebar and create dialog presentation with the approved references while keeping mock-data-only behavior.
 - Prisma schema and data layer from `context/feature-specs/05-prisma.md`, including the multi-file Prisma project models, cached Prisma client singleton with `prisma+postgres://` Accelerate branching and `@prisma/adapter-pg` fallback, the first migration, and generated client output.
 - Project API routes from `context/feature-specs/06-project-apis.md`, including authenticated owner-scoped list/create/rename/delete route handlers, shared request parsing helpers, owner checks for mutations, and verified `401`/`403` handling paths in the backend implementation.
-- Wire Editor Home to Real API from `context/feature-specs/07-wire-editor-home.md`, including Server Component data fetching, persistent `useProjectActions` hook, and verified project CRUD operations against the Prisma data layer.
+- Feature 09 from `context/feature-specs/09-share-dialog.md`, including collaborator management API routes, Clerk data enrichment, and the Share Dialog UI in the editor workspace.
 
 ## In Progress
 
@@ -39,6 +40,15 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Session Notes
 
+- Aligned background color, theme tokens, and typography with `context/ui-context.md`. Implemented a subtle 32px canvas grid, center brand glow, and refined the empty state typography to be more subtle and professional.
+- Completed Feature 09: Share Dialog. Implemented API routes for listing, inviting, and removing collaborators with server-side ownership enforcement.
+- Integrated Clerk Backend API for collaborator data enrichment (name/avatar).
+- Created the Share Dialog UI and integrated it into the Workspace Shell navbar.
+- Verified `npm run lint` and `npx tsc --noEmit` pass for the new collaborator routes and components.
+- Started Feature 09: Share Dialog. Created implementation plan and updating progress tracker.
+
+- Completed Feature 08 by implementing the `/editor/[roomId]` workspace shell with server-side access control, a dedicated access helper in `lib/project-access.ts`, and a full-viewport layout with project context and AI sidebar placeholders.
+- Verified `npm run lint` and `npx tsc --noEmit` pass for the new editor workspace routes and components.
 - Started `06-project-apis.md` by adding backend-only project route handlers for list/create/rename/delete, keeping the editor UI on mock state for now.
 - Completed `06-project-apis.md` with `GET /api/projects`, `POST /api/projects`, `PATCH /api/projects/[projectId]`, and `DELETE /api/projects/[projectId]`, all backed by Clerk auth and Prisma project ownership checks.
 - Added `lib/project-api.ts` to centralize route-level auth lookup, JSON parsing, default-name handling for project creation, and consistent error responses for project mutations.

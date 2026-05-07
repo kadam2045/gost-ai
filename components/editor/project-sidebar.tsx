@@ -1,54 +1,55 @@
-"use client"
+"use client";
 
-import { Pencil, Plus, Trash2, X } from "lucide-react"
+import { Pencil, Plus, Trash2, X } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { cn } from "@/lib/utils"
-import type { ProjectResponse } from "@/lib/project-api"
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+import type { ProjectResponse } from "@/lib/project-api";
 
 interface ProjectSidebarProps {
-  className?: string
-  isOpen: boolean
-  ownedProjects?: ProjectResponse[]
-  sharedProjects?: ProjectResponse[]
-  onClose?: () => void
-  onNewProject?: () => void
-  onRenameProject?: (project: ProjectResponse) => void
-  onDeleteProject?: (project: ProjectResponse) => void
+  className?: string;
+  isOpen: boolean;
+  ownedProjects?: ProjectResponse[];
+  sharedProjects?: ProjectResponse[];
+  activeProjectId?: string;
+  onClose?: () => void;
+  onNewProject?: () => void;
+  onRenameProject?: (project: ProjectResponse) => void;
+  onDeleteProject?: (project: ProjectResponse) => void;
 }
 
 function EmptyProjectsState({
   title,
   description,
 }: {
-  title: string
-  description: string
+  title: string;
+  description: string;
 }) {
   return (
     <div className="rounded-2xl border border-dashed border-surface-border bg-base/40 p-4">
       <div className="space-y-2">
-        <p className="text-base font-medium text-copy-secondary">
-          {title}
-        </p>
+        <p className="text-base font-medium text-copy-secondary">{title}</p>
         {description ? (
           <p className="text-sm leading-6 text-copy-muted">{description}</p>
         ) : null}
       </div>
     </div>
-  )
+  );
 }
 
 function ProjectList({
   projects,
+  activeProjectId,
   showOwnedActions,
   onRenameProject,
   onDeleteProject,
 }: {
-  projects: ProjectResponse[]
-  showOwnedActions: boolean
-  onRenameProject?: (project: ProjectResponse) => void
-  onDeleteProject?: (project: ProjectResponse) => void
+  projects: ProjectResponse[];
+  activeProjectId?: string;
+  showOwnedActions: boolean;
+  onRenameProject?: (project: ProjectResponse) => void;
+  onDeleteProject?: (project: ProjectResponse) => void;
 }) {
   if (projects.length === 0) {
     return (
@@ -60,7 +61,7 @@ function ProjectList({
         }
         description=""
       />
-    )
+    );
   }
 
   return (
@@ -68,10 +69,22 @@ function ProjectList({
       {projects.map((project) => (
         <div
           key={project.id}
-          className="group flex items-center gap-3 rounded-[1.75rem] border border-surface-border bg-subtle px-5 py-4"
+          className={cn(
+            "group flex items-center gap-3 rounded-[1.75rem] border px-5 py-4 transition-colors",
+            project.id === activeProjectId
+              ? "border-brand bg-accent-dim ring-1 ring-brand/20"
+              : "border-surface-border bg-subtle",
+          )}
         >
           <div className="min-w-0 flex-1">
-            <p className="truncate text-base font-medium text-copy-primary">
+            <p
+              className={cn(
+                "truncate text-base font-medium",
+                project.id === activeProjectId
+                  ? "text-brand"
+                  : "text-copy-primary",
+              )}
+            >
               {project.name}
             </p>
             <p className="truncate text-xs uppercase tracking-[0.18em] text-copy-faint">
@@ -106,12 +119,13 @@ function ProjectList({
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 export function ProjectSidebar({
   className,
   isOpen,
+  activeProjectId,
   ownedProjects = [],
   sharedProjects = [],
   onClose,
@@ -124,7 +138,7 @@ export function ProjectSidebar({
       className={cn(
         "pointer-events-none absolute inset-y-0 left-0 z-40 w-full max-w-[27rem] border-r border-surface-border bg-surface transition-transform duration-300 ease-out",
         isOpen ? "translate-x-0" : "-translate-x-[calc(100%+1rem)]",
-        className
+        className,
       )}
       aria-hidden={!isOpen}
     >
@@ -166,17 +180,21 @@ export function ProjectSidebar({
             className="mt-5 flex min-h-0 flex-1 flex-col gap-4"
           >
             <TabsList className="grid h-14 w-full grid-cols-2 rounded-2xl bg-subtle p-1">
-            <TabsTrigger value="my-projects" className="rounded-xl text-base">
-              My Projects
-            </TabsTrigger>
-            <TabsTrigger value="shared" className="rounded-xl text-base">
-              Shared
-            </TabsTrigger>
+              <TabsTrigger value="my-projects" className="rounded-xl text-base">
+                My Projects
+              </TabsTrigger>
+              <TabsTrigger value="shared" className="rounded-xl text-base">
+                Shared
+              </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="my-projects" className="min-h-0 flex-1 outline-none">
+            <TabsContent
+              value="my-projects"
+              className="min-h-0 flex-1 outline-none"
+            >
               <ProjectList
                 projects={ownedProjects}
+                activeProjectId={activeProjectId}
                 showOwnedActions
                 onRenameProject={onRenameProject}
                 onDeleteProject={onDeleteProject}
@@ -186,6 +204,7 @@ export function ProjectSidebar({
             <TabsContent value="shared" className="min-h-0 flex-1 outline-none">
               <ProjectList
                 projects={sharedProjects}
+                activeProjectId={activeProjectId}
                 showOwnedActions={false}
               />
             </TabsContent>
@@ -193,5 +212,5 @@ export function ProjectSidebar({
         </div>
       </div>
     </aside>
-  )
+  );
 }

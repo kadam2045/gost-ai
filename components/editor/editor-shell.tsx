@@ -35,14 +35,16 @@ export function EditorShell({ ownedProjects, sharedProjects }: EditorShellProps)
   } = useProjectActions()
 
   return (
-    <div className="flex min-h-screen flex-col bg-base text-copy-primary">
+    <div className="flex min-h-screen flex-col text-copy-primary">
+
       <EditorNavbar
         isSidebarOpen={isSidebarOpen}
         onSidebarToggle={() => setIsSidebarOpen((current) => !current)}
         centerContent={
-          <p className="text-lg font-semibold tracking-tight text-copy-primary">
+          <p className="text-sm font-medium tracking-tight text-copy-primary">
             Editor Home
           </p>
+
         }
         rightContent={
           <UserButton
@@ -83,17 +85,19 @@ export function EditorShell({ ownedProjects, sharedProjects }: EditorShellProps)
           onDeleteProject={openDeleteDialog}
         />
 
-        <div className="absolute inset-0 bg-base" />
 
         <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center px-6">
+
           <div className="w-full max-w-3xl space-y-6 text-center">
             <div className="space-y-4">
-              <h1 className="text-4xl font-semibold tracking-tight text-copy-primary sm:text-6xl">
+              <h1 className="text-2xl font-medium tracking-tight text-copy-primary sm:text-3xl">
                 Create a project or open an existing one
               </h1>
-              <p className="mx-auto max-w-2xl text-base leading-7 text-copy-muted sm:text-lg">
+
+              <p className="mx-auto max-w-2xl text-sm leading-7 text-copy-muted">
                 Start a new architecture workspace, or choose a project from the sidebar.
               </p>
+
             </div>
 
             <div className="flex justify-center">
